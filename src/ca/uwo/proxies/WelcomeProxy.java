@@ -39,8 +39,6 @@ public class WelcomeProxy extends Proxy {
 	@Override
 	public void restock(Map<String, Integer> restockDetails, Supplier supplier) {
 		next.restock(restockDetails, supplier);
-//		Facade facade = new Facade();
-//		facade.restock(restockDetails, supplier);
 	}
 
 }

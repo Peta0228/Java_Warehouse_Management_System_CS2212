@@ -5,6 +5,7 @@ import ca.uwo.client.Supplier;
 import ca.uwo.frontend.Facade;
 
 import java.util.Map;
+import java.util.stream.*;
 
 public class LowQuantityProxy extends Proxy {
 
@@ -15,13 +16,23 @@ public class LowQuantityProxy extends Proxy {
     @Override
     public void placeOrder(Map<String, Integer> orderDetails, Buyer buyer) {
 
-        // TODO: 2020/2/7 : authentication
-        // TODO: 2020/2/7 : low/high quantity
+        // TODO: 2020/2/7 : low/high quantity - conditions for high quality order
+        orderDetails.values().toArray();
+        int sum = 0;
+        Object[] orderQuantities = orderDetails.values().toArray();
+        for (Object orderQuantity : orderQuantities) {
+            sum += (int) orderQuantity;
+        }
 
+        if (sum > 10){
+            next.placeOrder(orderDetails, buyer);
+        }
+        else{
+            // TODO: 2020/2/7 : authentication
 
-        Facade facade = new Facade();
-        facade.placeOrder(orderDetails, buyer);
-
+            Facade facade = new Facade();
+            facade.placeOrder(orderDetails, buyer);
+        }
     }
 
     @Override

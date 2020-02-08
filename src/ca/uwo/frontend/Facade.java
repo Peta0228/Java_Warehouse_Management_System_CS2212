@@ -40,30 +40,24 @@ public class Facade implements FacadeCommands {
 		//The buyer places the order according to orderDetails. The stock should be depleted
 		//accordingly and the buyer needs to make the payment using the invoice.
 		System.out.println("Facade: ");
-
-
 		System.out.println("\tPlacing Order");
-		// Placing Order
 
+		// Placing Order
 		Order myOrder = new Order();
 		for (String s : orderDetails.keySet()) {
 			OrderItem orderItem = new OrderItem(s, orderDetails.get(s));
 			myOrder.addOrderItem(orderItem);
 		}
 
-		// TODO: 2020/2/7 price
-
 		// Deplete stock
-		DataManager dataManager = DataManager.getInstance();
 		controller.depleteStock(myOrder);
 
 		System.out.println("\tCreating Invoice");
+
 		// Create invoice for order
-
-		controller.createInvoice();
-
-
 		// Receive payment from client
+		bank.receivePayment(controller.createInvoice(), buyer);
+
 	}
 	
 	/* (non-Javadoc)
@@ -74,10 +68,22 @@ public class Facade implements FacadeCommands {
 		//The supplier restock the supplies according to restockDetails. The stock should be 
 		//replenished accordingly and the supplier need to get paid.
 		System.out.println("Facade: ");
+
 		// Create the order
+		Order myOrder = new Order();
+		for (String s : restockDetails.keySet()) {
+			OrderItem orderItem = new OrderItem(s, restockDetails.get(s));
+			myOrder.addOrderItem(orderItem);
+		}
+
 		System.out.println("\tReplenishing Stock");
+
 		// Replenish stock according to order
+		controller.replenishStock(myOrder);
+
 		// Pay the supplier
+		bank.paySupplier(supplier);
+
 	}
 	
 	/**
