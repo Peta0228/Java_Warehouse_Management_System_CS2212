@@ -13,9 +13,9 @@ import java.util.Map;
  */
 public class IndividualPricingStrategyRepo {
 	private static IndividualPricingStrategyRepo instance = null;
-	
+
 	private Map<String, IndividualPricingStrategy> strategies = new HashMap<String, IndividualPricingStrategy>();
-	
+
 	/**
 	 * constructor for the IndividualPricingStrategyRepo class.
 	 * Read the name of the item and corresponding strategy from the file and save them.
@@ -34,7 +34,7 @@ public class IndividualPricingStrategyRepo {
 			ioe.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * there should be only one instance of IndividualPricingStrategyRepo.
 	 * @return the instance of IndividualPricingStrategyRepo.
@@ -42,10 +42,10 @@ public class IndividualPricingStrategyRepo {
 	public static IndividualPricingStrategyRepo getInstance() {
 		if (instance == null)
 			instance = new IndividualPricingStrategyRepo();
-		
+
 		return instance;
 	}
-	
+
 	/**
 	 * retrieves one strategy from the repository.
 	 * @param itemName the name of the item, which is attached to a strategy.

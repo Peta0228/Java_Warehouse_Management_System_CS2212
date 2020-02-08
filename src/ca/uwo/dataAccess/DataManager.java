@@ -28,12 +28,12 @@ public class DataManager {
             // db parameters
             String url = "jdbc:sqlite:warehouse.db";
             // create a connection to the database
-            conn = DriverManager.getConnection(url);
+			conn = DriverManager.getConnection(url);
             
             System.out.println("Connection to SQLite has been established.");
             
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+			System.out.println(e.getMessage());
         }
     }
 	
@@ -107,7 +107,7 @@ public class DataManager {
 	
 	/**
 	 * insert an item into the database.
-	 * @param data object of {@link ca.uwo.model.Item} class
+	 * @param item object of {@link ca.uwo.model.Item} class
 	 */
 	public void insertItem(Item item) {
 		String sql = "INSERT INTO warehouses(name,quantity,unitPrice) VALUES(?,?,?)";

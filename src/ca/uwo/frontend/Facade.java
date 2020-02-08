@@ -11,6 +11,7 @@ import ca.uwo.frontend.interfaces.FacadeCommands;
 import ca.uwo.utils.Invoice;
 import ca.uwo.utils.Order;
 import ca.uwo.utils.OrderItem;
+import ca.uwo.dataAccess.DataManager;
 
 /**
  * @author kkontog, ktsiouni, mgrigori
@@ -39,11 +40,29 @@ public class Facade implements FacadeCommands {
 		//The buyer places the order according to orderDetails. The stock should be depleted
 		//accordingly and the buyer needs to make the payment using the invoice.
 		System.out.println("Facade: ");
-		// Create order
+
+
 		System.out.println("\tPlacing Order");
+		// Placing Order
+
+		Order myOrder = new Order();
+		for (String s : orderDetails.keySet()) {
+			OrderItem orderItem = new OrderItem(s, orderDetails.get(s));
+			myOrder.addOrderItem(orderItem);
+		}
+
+		// TODO: 2020/2/7 price
+
 		// Deplete stock
+		DataManager dataManager = DataManager.getInstance();
+		controller.depleteStock(myOrder);
+
 		System.out.println("\tCreating Invoice");
 		// Create invoice for order
+
+		controller.createInvoice();
+
+
 		// Receive payment from client
 	}
 	

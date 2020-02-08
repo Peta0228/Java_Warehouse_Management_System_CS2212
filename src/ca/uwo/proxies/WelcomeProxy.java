@@ -15,10 +15,14 @@ import ca.uwo.frontend.Facade;
  * design pattern.
  */
 public class WelcomeProxy extends Proxy {
+
+	private static Proxy next = null;
+
 	/**
 	 * constructor for WelcomeProxy class.
 	 */
 	public WelcomeProxy() {
+		next = new SupplierProxy();
 	}
 
 	/* (non-Javadoc)
@@ -26,8 +30,7 @@ public class WelcomeProxy extends Proxy {
 	 */
 	@Override
 	public void placeOrder(Map<String, Integer> orderDetails, Buyer buyer) {
-		Facade facade = new Facade();
-		facade.placeOrder(orderDetails, buyer);
+		next.placeOrder(orderDetails, buyer);
 	}
 
 	/* (non-Javadoc)
@@ -35,8 +38,9 @@ public class WelcomeProxy extends Proxy {
 	 */
 	@Override
 	public void restock(Map<String, Integer> restockDetails, Supplier supplier) {
-		Facade facade = new Facade();
-		facade.restock(restockDetails, supplier);
+		next.restock(restockDetails, supplier);
+//		Facade facade = new Facade();
+//		facade.restock(restockDetails, supplier);
 	}
 
 }
