@@ -3,87 +3,75 @@ package ca.uwo.frontend;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import ca.uwo.banking.BankingTransactions;
-import ca.uwo.client.Buyer;
-import ca.uwo.client.Supplier;
-import ca.uwo.controller.Controller;
-import ca.uwo.frontend.interfaces.FacadeCommands;
-import ca.uwo.utils.Invoice;
-import ca.uwo.utils.Order;
-import ca.uwo.utils.OrderItem;
-import ca.uwo.dataAccess.DataManager;
+import warehouse.banking.BankingTransactions;
+import warehouse.client.Buyer;
+import warehouse.client.Supplier;
+import warehouse.controller.Controller;
+import warehouse.frontend.interfaces.FacadeCommands;
+import warehouse.utils.Invoice;
+import warehouse.utils.Order;
+import warehouse.utils.OrderItem;
 
 /**
  * @author kkontog, ktsiouni, mgrigori
  * This class hides the complexities of the system by exposing only high level interfaces 
- * to the {@link ca.uwo.proxies.Proxy} class (using Facade design pattern), it utilizes operations in the 
- * {@link ca.uwo.controller.Controller} for the interface implementations.
+ * to the {@link warehouse.proxies.Proxy} class (using Facade design pattern), it utilizes operations in the 
+ * {@link warehouse.controller.Controller} for the interface implementations.
  */
 public class Facade implements FacadeCommands {
 	private Controller controller;
 	private BankingTransactions bank;
+	private static Facade instance = null;
+	
+	/**
+	 * there should be only one instance of Facade.
+	 * @return the instance of Facade class.
+	 */
+	public static Facade getInstance() {
+		if (instance == null)
+			instance = new Facade();
+		
+		return instance;
+	}
 	
 	/**
 	 * constructor for Facade class.
 	 */
-	public Facade() {
+	private Facade() {
 		super();
-		this.controller = new Controller();
+		this.controller = Controller.getInstance();
 		this.bank = new BankingTransactions();
 	}
 	
 	/* (non-Javadoc)
-	 * @see ca.uwo.frontend.interfaces.FacadeCommands#placeOrder(java.util.Map, ca.uwo.client.Buyer)
+	 * @see warehouse.frontend.interfaces.FacadeCommands#placeOrder(java.util.Map, warehouse.client.Buyer)
 	 */
 	@Override
 	public void placeOrder(Map<String, Integer> orderDetails, Buyer buyer) {
 		//The buyer places the order according to orderDetails. The stock should be depleted
 		//accordingly and the buyer needs to make the payment using the invoice.
 		System.out.println("Facade: ");
+		Order myOrder = createOrder(orderDetails, buyer.getUserName());
 		System.out.println("\tPlacing Order");
-
-		// Placing Order
-		Order myOrder = new Order();
-		for (String s : orderDetails.keySet()) {
-			OrderItem orderItem = new OrderItem(s, orderDetails.get(s));
-			myOrder.addOrderItem(orderItem);
-		}
-
-		// Deplete stock
 		controller.depleteStock(myOrder);
-
 		System.out.println("\tCreating Invoice");
-
-		// Create invoice for order
-		// Receive payment from client
-		bank.receivePayment(controller.createInvoice(), buyer);
-
+		Invoice invoice = controller.createInvoice();
+		bank.receivePayment(invoice, buyer);
 	}
 	
 	/* (non-Javadoc)
-	 * @see ca.uwo.frontend.interfaces.FacadeCommands#restock(java.util.Map, ca.uwo.client.Supplier)
+	 * @see warehouse.frontend.interfaces.FacadeCommands#restock(java.util.Map, warehouse.client.Supplier)
 	 */
 	@Override
 	public void restock(Map<String, Integer> restockDetails, Supplier supplier) {
 		//The supplier restock the supplies according to restockDetails. The stock should be 
 		//replenished accordingly and the supplier need to get paid.
 		System.out.println("Facade: ");
-
 		// Create the order
-		Order myOrder = new Order();
-		for (String s : restockDetails.keySet()) {
-			OrderItem orderItem = new OrderItem(s, restockDetails.get(s));
-			myOrder.addOrderItem(orderItem);
-		}
-
+		Order myOrder = createOrder(restockDetails, "supplier");
 		System.out.println("\tReplenishing Stock");
-
-		// Replenish stock according to order
 		controller.replenishStock(myOrder);
-
-		// Pay the supplier
 		bank.paySupplier(supplier);
-
 	}
 	
 	/**
