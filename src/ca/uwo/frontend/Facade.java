@@ -3,20 +3,20 @@ package ca.uwo.frontend;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import warehouse.banking.BankingTransactions;
-import warehouse.client.Buyer;
-import warehouse.client.Supplier;
-import warehouse.controller.Controller;
-import warehouse.frontend.interfaces.FacadeCommands;
-import warehouse.utils.Invoice;
-import warehouse.utils.Order;
-import warehouse.utils.OrderItem;
+import ca.uwo.banking.BankingTransactions;
+import ca.uwo.client.Buyer;
+import ca.uwo.client.Supplier;
+import ca.uwo.controller.Controller;
+import ca.uwo.frontend.interfaces.FacadeCommands;
+import ca.uwo.utils.Invoice;
+import ca.uwo.utils.Order;
+import ca.uwo.utils.OrderItem;
 
 /**
  * @author kkontog, ktsiouni, mgrigori
  * This class hides the complexities of the system by exposing only high level interfaces 
- * to the {@link warehouse.proxies.Proxy} class (using Facade design pattern), it utilizes operations in the 
- * {@link warehouse.controller.Controller} for the interface implementations.
+ * to the {@link ca.uwo.proxies.Proxy} class (using Facade design pattern), it utilizes operations in the
+ * {@link ca.uwo.controller.Controller} for the interface implementations.
  */
 public class Facade implements FacadeCommands {
 	private Controller controller;
@@ -39,7 +39,7 @@ public class Facade implements FacadeCommands {
 	 */
 	private Facade() {
 		super();
-		this.controller = Controller.getInstance();
+		this.controller = new Controller();
 		this.bank = new BankingTransactions();
 	}
 	

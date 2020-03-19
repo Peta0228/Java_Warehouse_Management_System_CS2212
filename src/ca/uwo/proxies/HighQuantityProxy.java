@@ -43,8 +43,7 @@ public class HighQuantityProxy extends Proxy {
             if (buyerInDatabase.getUserName().equals(buyer.getUserName()) &&
                     buyerInDatabase.getPassword().equals(buyer.getPassword())){
                 System.out.println("Your order is handled by the high quantity order session.");
-                Facade facade = new Facade();
-                facade.placeOrder(orderDetails, buyer);
+                Facade.getInstance().placeOrder(orderDetails, buyer);
                 authenticated = true;
             }
         }

@@ -2,8 +2,10 @@ package ca.uwo.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import ca.uwo.model.item.states.ItemState;
+import ca.uwo.model.item.states.ItemStateFactory;
 import ca.uwo.utils.ItemResult;
 import ca.uwo.utils.ResponseCode;
 import ca.uwo.viewer.Messenger;
@@ -49,6 +51,8 @@ public class Item {
 
 		// When you add states to items make sure you
 		// initialize them using the proper STATE!!!!
+
+		state = ItemStateFactory.create(availableQuantity);
 
 	}
 
@@ -98,16 +102,15 @@ public class Item {
 	public ItemResult deplete(int quantity) {
 		// Deplete the item with quantity and return the execution result of
 		// deplete action.
-		ItemResult itemResult;
-		int availableQuantity = this.getAvailableQuantity();
-		if (availableQuantity < quantity) {
-			itemResult = new ItemResult("OUT OF STOCK", ResponseCode.Not_Completed);
-		} else {
-			availableQuantity -= quantity;
-			itemResult = new ItemResult("AVAILABLE", ResponseCode.Completed);
-		}
 
-		this.setAvailableQuantity(availableQuantity);
+		ItemResult itemResult;
+		itemResult = state.deplete(this, quantity);
+
+		/*
+		check if there should be a change of state
+		 */
+		state = ItemStateFactory.create(getAvailableQuantity());
+
 		return itemResult;
 	}
 
@@ -121,11 +124,29 @@ public class Item {
 	public ItemResult replenish(int quantity) {
 		// Replenish the item with quantity and return the execution result of
 		// replenish action.
-		int availableQuantity = this.getAvailableQuantity();
-		availableQuantity += quantity;
-		this.setAvailableQuantity(availableQuantity);
-		ItemResult itemResult = new ItemResult("RESTOCKED", ResponseCode.Completed);
+		ItemResult itemResult;
+		itemResult = state.replenish(this,quantity);
+
+		/*
+		check if there should be a change of state
+		 */
+		state = ItemStateFactory.create(getAvailableQuantity());
+
 		return itemResult;
+	}
+
+	public void addViewer(Viewer viewer){
+		viewers.add(viewer);
+	}
+
+	public void removeViewer(Viewer viewer){
+		viewers.remove(viewer);
+	}
+
+	public void notifyViewers(){
+		for (Viewer viewer : viewers) {
+			viewer.inform(this);
+		}
 	}
 
 }
