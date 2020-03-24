@@ -22,7 +22,7 @@ public class LowQuantityProxy extends Proxy {
 
 
         /*
-        Create credential database, segment copied from the Driver classs
+        Create credential database, segment copied from the Driver class
          */
         Map<Integer, Buyer> buyers = new HashMap<>();
         //Read all the buyers from the file and save them. Each line consists of the ID, name and password of the buyer.

@@ -51,7 +51,6 @@ public class Item {
 
 		// When you add states to items make sure you
 		// initialize them using the proper STATE!!!!
-
 		state = ItemStateFactory.create(availableQuantity);
 
 	}
@@ -102,7 +101,6 @@ public class Item {
 	public ItemResult deplete(int quantity) {
 		// Deplete the item with quantity and return the execution result of
 		// deplete action.
-
 		ItemResult itemResult;
 		itemResult = state.deplete(this, quantity);
 
@@ -135,14 +133,23 @@ public class Item {
 		return itemResult;
 	}
 
+	/*
+	adder for viewers
+	 */
 	public void addViewer(Viewer viewer){
 		viewers.add(viewer);
 	}
 
+	/*
+	remover for viewers
+	 */
 	public void removeViewer(Viewer viewer){
 		viewers.remove(viewer);
 	}
 
+	/*
+	notify viewers by their inform method
+	 */
 	public void notifyViewers(){
 		for (Viewer viewer : viewers) {
 			viewer.inform(this);

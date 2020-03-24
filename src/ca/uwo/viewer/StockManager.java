@@ -44,7 +44,6 @@ public class StockManager extends Viewer implements Runnable {
 	 */
 	@Override
 	public void inform(Item item) {
-		// TODO: 2020/3/19 Any conditions before restock?
 		restockDetails.put(item.getName(), 50);
 	}
 

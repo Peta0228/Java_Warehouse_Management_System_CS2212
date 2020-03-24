@@ -6,6 +6,7 @@ import ca.uwo.model.Item;
  * @author kkontog, ktsiouni, mgrigori
  * One concrete implementation of the {@link Viewer} class. 
  */
+
 public class Messenger extends Viewer {
 	private static Messenger instance = null;
 	
@@ -22,7 +23,6 @@ public class Messenger extends Viewer {
 	@Override
 	public void inform(Item item) {
 
-		// TODO: 2020/3/19 check if the "if" condition is necessary
 		if (item.getAvailableQuantity() == 0){
 			System.out.println("Notify department that item run out of stock: " + item.getName());
 		}
