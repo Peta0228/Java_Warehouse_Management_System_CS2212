@@ -12,7 +12,9 @@ public class Controller {
 	private CreateInvoiceOperation createInvoiceOp;
 	private DepleteStockOperation depleteStockOp;
 	private ReplenishStockOperation replenishStockOp;
-	
+
+	private static Controller instance = null;
+
 	Order currentOrder = null;
 	
 	/**
@@ -46,10 +48,24 @@ public class Controller {
 		
 	}
 
+
+	/**
+	 * there should be only one instance of Controller.
+	 * @return the instance of Controller class.
+	 */
+	public static Controller getInstance(){
+		if (instance == null){
+			instance = new Controller();
+		}
+
+		return instance;
+	}
+
+
 	/**
 	 * constructor for the Controller.
 	 */
-	public Controller() {
+	private Controller() {
 		depleteStockOp = new DepleteStockOperation();
 		replenishStockOp = new ReplenishStockOperation();
 		createInvoiceOp = new CreateInvoiceOperation();

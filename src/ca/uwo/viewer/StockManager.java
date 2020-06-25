@@ -6,6 +6,8 @@ import java.util.Map;
 import ca.uwo.client.Supplier;
 import ca.uwo.model.Item;
 import ca.uwo.viewer.restock.strategies.RestockStrategy;
+import ca.uwo.viewer.restock.strategies.RestockStrategyFactory;
+import ca.uwo.viewer.restock.strategies.Units50RestockStrategy;
 
 /**
  * @author kkontog, ktsiouni, mgrigori
@@ -17,6 +19,7 @@ public class StockManager extends Viewer implements Runnable {
 	
 	// This is the attribute to reference the strategy attached
 	private RestockStrategy restockStrategy;
+
 	private Map<String, Integer> restockDetails = new HashMap<String, Integer>();
 
 	public static StockManager getInstance() {
@@ -35,8 +38,14 @@ public class StockManager extends Viewer implements Runnable {
 //		restockDetails.put("pear", 50);
 //		restockDetails.put("mango", 50);
 //		restockDetails.put("onions", 50);
+
 		Thread t = new Thread(this);
 		t.start();
+
+		/*
+		initialize restock Strategy
+		 */
+		restockStrategy = RestockStrategyFactory.create("Units50");
 	}
 	
 	/* (non-Javadoc)
@@ -44,7 +53,14 @@ public class StockManager extends Viewer implements Runnable {
 	 */
 	@Override
 	public void inform(Item item) {
-		restockDetails.put(item.getName(), 50);
+
+		/*
+		 calculates the quantity of the items to be restocked using the appropriate strategy,
+		  and attaches it to a HashMap that associates the item name with the restock quantity.
+		 */
+		restockDetails.put(item.getName(), restockStrategy.calculateQuantity(item.getName(),
+				item.getAvailableQuantity(), item.getPrice()));
+
 	}
 
 	// TODO make concurrent
@@ -65,6 +81,8 @@ public class StockManager extends Viewer implements Runnable {
 	public void setRestockStrategy(RestockStrategy restockStrategy) {
 		System.out.println("Restock strategy changed to: " + restockStrategy.toString());
 		this.restockStrategy = restockStrategy;
+
+
 	}
 
 	/* (non-Javadoc)

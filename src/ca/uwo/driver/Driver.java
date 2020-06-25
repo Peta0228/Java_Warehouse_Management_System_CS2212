@@ -11,6 +11,7 @@ import ca.uwo.client.Buyer;
 import ca.uwo.client.Supplier;
 import ca.uwo.viewer.StockManager;
 import ca.uwo.viewer.restock.strategies.RestockStrategy;
+import ca.uwo.viewer.restock.strategies.RestockStrategyFactory;
 
 /**
  * @author kkontog, ktsiouni, mgrigori This class provides the main method to
@@ -41,10 +42,8 @@ public class Driver {
 			while ((line = br.readLine()) != null) {
 				String[] lineTokens = line.split("\t");
 				if (lineTokens[0].equals("StrategyChange")) {
-					// Uncomment the following lines when restock strategies are implemented
-					
-					//RestockStrategy strategy = RestockStrategyFactory.create(lineTokens[1]);
-					//StockManager.getInstance().setRestockStrategy(strategy);
+					RestockStrategy strategy = RestockStrategyFactory.create(lineTokens[1]);
+					StockManager.getInstance().setRestockStrategy(strategy);
 				} else {
 					Integer buyerId = Integer.parseInt(lineTokens[0]);
 					Map<String, Integer> orderItems = new HashMap<String, Integer>();

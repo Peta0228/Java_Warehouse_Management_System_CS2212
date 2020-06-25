@@ -39,7 +39,7 @@ public class Facade implements FacadeCommands {
 	 */
 	private Facade() {
 		super();
-		this.controller = new Controller();
+		this.controller = Controller.getInstance();
 		this.bank = new BankingTransactions();
 	}
 	

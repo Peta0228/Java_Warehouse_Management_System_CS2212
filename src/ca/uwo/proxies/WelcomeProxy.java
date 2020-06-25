@@ -18,11 +18,20 @@ public class WelcomeProxy extends Proxy {
 
 	private static Proxy next = null;
 
+	private static WelcomeProxy instance = null;
+
+	public static WelcomeProxy getInstance(){
+		if (instance == null){
+			instance = new WelcomeProxy();
+		}
+		return instance;
+	}
+
 	/**
 	 * constructor for WelcomeProxy class.
 	 */
 	public WelcomeProxy() {
-		next = new SupplierProxy();
+		next = SupplierProxy.getInstance();
 	}
 
 	/* (non-Javadoc)

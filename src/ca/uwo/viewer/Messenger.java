@@ -23,9 +23,8 @@ public class Messenger extends Viewer {
 	@Override
 	public void inform(Item item) {
 
-		if (item.getAvailableQuantity() == 0){
-			System.out.println("Notify department that item run out of stock: " + item.getName());
-		}
+		System.out.println("Notify department that item run out of stock: " + item.getName());
+
 
 	}
 

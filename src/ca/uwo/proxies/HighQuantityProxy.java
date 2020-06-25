@@ -12,6 +12,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HighQuantityProxy extends Proxy {
+
+    private static HighQuantityProxy instance = null;
+
+    public static HighQuantityProxy getInstance(){
+        if (instance == null){
+            instance = new HighQuantityProxy();
+        }
+        return instance;
+    }
+
+    private HighQuantityProxy(){
+    }
+
+
     @Override
     public void placeOrder(Map<String, Integer> orderDetails, Buyer buyer) {
 

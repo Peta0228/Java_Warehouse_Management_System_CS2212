@@ -15,7 +15,17 @@ public class LowQuantityProxy extends Proxy {
 
     private static Proxy next = null;
 
-    public LowQuantityProxy(){ next  = new HighQuantityProxy(); }
+    private static LowQuantityProxy instance = null;
+
+    public static LowQuantityProxy getInstance(){
+        if (instance == null){
+            instance = new LowQuantityProxy();
+        }
+
+        return instance;
+    }
+
+    private LowQuantityProxy(){ next  = HighQuantityProxy.getInstance(); }
 
     @Override
     public void placeOrder(Map<String, Integer> orderDetails, Buyer buyer) {

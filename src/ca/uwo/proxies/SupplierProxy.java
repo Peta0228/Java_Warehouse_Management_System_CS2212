@@ -11,8 +11,17 @@ public class SupplierProxy extends Proxy {
 
     private static Proxy next = null;
 
-    public SupplierProxy(){
-        next = new LowQuantityProxy();
+    private static SupplierProxy instance = null;
+
+    public static SupplierProxy getInstance(){
+        if (instance == null){
+            instance = new SupplierProxy();
+        }
+        return instance;
+    }
+
+    private SupplierProxy(){
+        next = LowQuantityProxy.getInstance();
     }
 
     @Override

@@ -1,7 +1,8 @@
 package ca.uwo.pricingStrategies.individual;
 
-import ca.uwo.pricingStrategies.aggregate.AggregateDefaultPricingStrategy;
-import ca.uwo.pricingStrategies.aggregate.TestAggregatePricingStrategy;
+/*
+This is the factory in factory design pattern
+ */
 
 public class IndividualPricingStrategyFactory {
 
